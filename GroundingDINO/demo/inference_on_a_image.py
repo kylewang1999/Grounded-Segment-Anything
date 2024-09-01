@@ -1,6 +1,7 @@
 import argparse
 import os
 import sys
+from os.path import expanduser
 
 import numpy as np
 import torch
@@ -119,22 +120,36 @@ def get_grounding_output(model, image, caption, box_threshold, text_threshold, w
 
 if __name__ == "__main__":
 
-    parser = argparse.ArgumentParser("Grounding DINO example", add_help=True)
-    parser.add_argument("--config_file", "-c", type=str, required=True, help="path to config file")
-    parser.add_argument(
-        "--checkpoint_path", "-p", type=str, required=True, help="path to checkpoint file"
-    )
-    parser.add_argument("--image_path", "-i", type=str, required=True, help="path to image file")
-    parser.add_argument("--text_prompt", "-t", type=str, required=True, help="text prompt")
-    parser.add_argument(
-        "--output_dir", "-o", type=str, default="outputs", required=True, help="output directory"
-    )
+    # parser = argparse.ArgumentParser("Grounding DINO example", add_help=True)
+    # parser.add_argument("--config_file", "-c", type=str, required=True, help="path to config file")
+    # parser.add_argument(
+    #     "--checkpoint_path", "-p", type=str, required=True, help="path to checkpoint file"
+    # )
+    # parser.add_argument("--image_path", "-i", type=str, required=True, help="path to image file")
+    # parser.add_argument("--text_prompt", "-t", type=str, required=True, help="text prompt")
+    # parser.add_argument(
+    #     "--output_dir", "-o", type=str, default="outputs", required=True, help="output directory"
+    # )
 
-    parser.add_argument("--box_threshold", type=float, default=0.3, help="box threshold")
-    parser.add_argument("--text_threshold", type=float, default=0.25, help="text threshold")
+    # parser.add_argument("--box_threshold", type=float, default=0.3, help="box threshold")
+    # parser.add_argument("--text_threshold", type=float, default=0.25, help="text threshold")
 
-    parser.add_argument("--cpu-only", action="store_true", help="running on cpu only!, default=False")
-    args = parser.parse_args()
+    # parser.add_argument("--cpu-only", action="store_true", help="running on cpu only!, default=False")
+    # parser.add_argument('--bert_base_uncased_path', type=str, required=True, help='Path to the BERT base uncased model')
+    # args = parser.parse_args()
+    
+    from types import SimpleNamespace
+    args = SimpleNamespace(
+        config_file = expanduser('~/repos/droid_auto_calib/param_checkpoints/GroundingDINO_SwinT_OGC.py'),
+        checkpoint_path = expanduser('~/repos/droid_auto_calib/param_checkpoints/groundingdino_swint_ogc.pth'),
+        image_path = expanduser('~/repos/droid_auto_calib/assets/droid_Thu_May_11_13_33_20_2023/img_thumbnails/third_person_1.jpg'),
+        # image_path = expanduser('~/repos/droid_auto_calib/assets/droid_Thu_May_11_13_33_20_2023/img_thumbnails/third_person_1_notvisible.jpg'),
+        output_dir = expanduser('~/repos/droid_auto_calib'),
+        text_prompt = 'Highlight the robot gripper (end effector), not the arm or base.',
+        box_threshold = 0.3,
+        text_threshold = 0.25,
+        cpu_only=False
+    )
 
     # cfg
     config_file = args.config_file  # change the path of the model config file
